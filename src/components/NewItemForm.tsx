@@ -34,6 +34,7 @@ export const NewItemForm: React.FC<NewItemFormProps> = ({onAdd}) => {
       />
       <NewItemButton
         onClick={() => {
+          console.log(text)
           onAdd(text);
         }}
       >

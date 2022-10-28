@@ -3,6 +3,7 @@ import {ColumnContainer, ColumnTitle} from '../styles';
 import {AddNewItem} from './AddNewItem';
 import {useAppState} from '../state/AppStateContext';
 import {Card} from './Card';
+import {addTask} from '../state/actions';
 
 type ColumnProps = {
   id: string;
@@ -11,7 +12,7 @@ type ColumnProps = {
 };
 
 export const Column: React.FC<ColumnProps> = ({id, text}) => {
-  const {getTasksByListId} = useAppState();
+  const {getTasksByListId, dispatch} = useAppState();
 
   const tasks = getTasksByListId(id);
   return (
@@ -21,8 +22,10 @@ export const Column: React.FC<ColumnProps> = ({id, text}) => {
         return <Card key={task.id} id={task.id} text={task.text} />;
       })}
       <AddNewItem
-        toggleButtonText="+ Add another list"
-        onAdd={console.log}
+        onAdd={(text) => {
+          dispatch(addTask(text, id));
+        }}
+        toggleButtonText="+ Add another task"
         dark
       />
     </ColumnContainer>

@@ -3,13 +3,14 @@ import {AppContainer} from './styles';
 import {Column} from './components/Column';
 import {AddNewItem} from './components/AddNewItem';
 import {useAppState} from './state/AppStateContext';
+import {addList} from './state/actions';
 
 type AppProps = {
   children?: React.ReactNode;
 };
 
 const App: React.FC<AppProps> = () => {
-  const {lists} = useAppState();
+  const { dispatch, lists } = useAppState();
   return (
     <AppContainer>
       {lists.map((list) => {
@@ -17,7 +18,9 @@ const App: React.FC<AppProps> = () => {
       })}
       <AddNewItem
         toggleButtonText="+ Add another list"
-        onAdd={console.log}
+        onAdd={(text) => {
+          dispatch(addList(text));
+        }}
       />
     </AppContainer>
   );
