@@ -12,9 +12,14 @@ type ColumnProps = {
   id: string;
   text: string;
   children?: React.ReactNode;
+  isPreview?: boolean;
 };
 
-export const Column: React.FC<ColumnProps> = ({id, text}) => {
+export const Column: React.FC<ColumnProps> = ({
+  id,
+  text,
+  isPreview,
+}) => {
   const {getTasksByListId, dispatch, draggedItem} = useAppState();
   const {drag} = useItemDrag({id, text, type: 'COLUMN'});
   const tasks = getTasksByListId(id);
@@ -38,12 +43,21 @@ export const Column: React.FC<ColumnProps> = ({id, text}) => {
   drag(drop(ref));
 
   return (
-    <ColumnContainer ref={ref}
-    isHidden={isHidden(draggedItem, 'COLUMN', id)}
+    <ColumnContainer
+      ref={ref}
+      isHidden={isHidden(draggedItem, 'COLUMN', id, isPreview)}
+      isPreview={isPreview}
     >
       <ColumnTitle>{text}</ColumnTitle>
       {tasks.map((task) => {
-        return <Card key={task.id} id={task.id} text={task.text} />;
+        return (
+          <Card
+            key={task.id}
+            id={task.id}
+            text={task.text}
+            columnId={id}
+          />
+        );
       })}
       <AddNewItem
         onAdd={(text) => {
